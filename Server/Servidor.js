@@ -1,6 +1,7 @@
 //importo el framework express
 //const express = require('express')
 import express from 'express'
+import {rutas} from '../routes/rutas.js'
 
 export class Servidor{
     constructor(){
@@ -15,26 +16,10 @@ export class Servidor{
     
     }
     atenderPeticiones(){
-        //estos son los servicios de mi API
-        this.app.get('/api/v1/sabado', function (req, res) {
-            res.send('Hola soy un Get')
-          })
+        //Llamado al archivo de rutas
 
-          this.app.get('/api/v1/sabado/:id', function (req, res) {
-            res.send('Hola soy un Get')
-          })
-
-          this.app.post('/api/v1/sabado/', function (req, res) {
-            res.send('Hola soy un POST')
-          })
-
-          this.app.put('/api/v1/sabado/', function (req, res) {
-            res.send('Hola soy un PUT')
-          })
-
-          this.app.delete('/api/v1/sabado/', function (req, res) {
-            res.send('Hola soy un DELETE')
-          })
+        this.app.use('/', rutas)
+        
 
 
 
