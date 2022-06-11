@@ -3,19 +3,20 @@
 //2.Ejecutar logica de negocio
 //3.Llamar a la capa de servicios
 //4.Enviar las respuestas al cliente
+//Importo el servicio
+import {ServicioHabitacion} from '../services/ServicioHabitacion.js'
 
 export class ControladorHabitacion {
 
     constructor(){}
 
-    buscarTodas(request,response){
+    async buscarTodas(request,response){
 
-        let datos=[{nombre:"juan",edad:32},{nombre:"sara",edad:31}]//borrar despues
+        let servicioHabitacion= new ServicioHabitacion()
         try {
-
             response.status(200).json({
                 mensaje:"Exito buscando los datos",
-                data:datos,
+                data:await servicioHabitacion.buscarTodas(),
                 estado:true
             })
 
@@ -28,15 +29,16 @@ export class ControladorHabitacion {
         }
     }
 
-    buscarPorId(request,response){
-        let datos=[{nombre:"juan",edad:32}]//borrar despues
+    async buscarPorId(request,response){
+
+        let servicioHabitacion= new ServicioHabitacion()
         let id=request.params.id
         console.log(id)
         try {
 
             response.status(200).json({
                 mensaje:"Exito buscando los datos"+id,
-                data:datos,
+                data:await servicioHabitacion.buscarporId(id),
                 estado:true
             })
 
@@ -51,10 +53,74 @@ export class ControladorHabitacion {
         
     }
 
-    registrar(request,response){}
+    async registrar(request,response){
+        let servicioHabitacion= new ServicioHabitacion()
+        let datosPeticion=request.body
+        try{
+            await servicioHabitacion.registrar(datosPeticion)
+            response.status(200).json({
+                mensaje:"Exito agregando la habitacion",
+                data:null,
+                estado:true
+            })
 
-    editar(request,response){}
+        }catch(error){
 
-    eliminar(request,response){}
+            response.status(400).json({
+                mensaje:"Fallamos agregando la habitacion"+error,
+                data:[],
+                estado:false 
+            })
+        }
+    }
 
+    async editar(request,response){
+        let servicioHabitacion= new ServicioHabitacion()
+        let id=request.params.id
+        let datosPeticion=request.body  
+        
+        try{
+            await servicioHabitacion.editar(id,datosPeticion)
+            response.status(200).json({
+            mensaje:"Exito editando la habitacion",
+            data:null,
+            estado:true
+        })
+
+        }catch(error){
+
+            response.status(400).json({
+                mensaje:"Fallamos editando la habitacion "+error,
+                data:[],
+                estado:false 
+            })
+
+        }
+
+    }
+
+    async eliminar(request,response){
+        let servicioHabitacion= new ServicioHabitacion()
+        let id=request.params.id
+        let datosPeticion=request.body
+        
+        
+        try{
+            await servicioHabitacion.eliminar(id)
+            response.status(200).json({
+            mensaje:"Exito editando la habitacion",
+            data:null,
+            estado:true
+        })
+
+        }catch(error){
+
+            response.status(400).json({
+                mensaje:"Fallamos editando la habitacion "+error,
+                data:[],
+                estado:false 
+            })
+        }
+
+    }
 }
